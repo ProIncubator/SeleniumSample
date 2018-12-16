@@ -39,5 +39,6 @@
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4.9" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okhttp3:okhttp:3.10.0" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okio:okio:1.14.1" level="project" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:2.6" level="project" />
   </component>
 </module>
