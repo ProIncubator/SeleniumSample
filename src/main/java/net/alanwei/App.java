@@ -23,9 +23,10 @@ public class App {
     private final static String SEPERATOR = System.getProperty("file.separator");
 
     static {
-        String winDriverName = "win64.geckodriver.exe";
-        String macDriverName = "mac.geckodriver";
-        String webDriverPath = HOME_DIR + SEPERATOR + "src" + SEPERATOR + "main" + SEPERATOR + "resources" + SEPERATOR + "webdrivers" + SEPERATOR + macDriverName;
+        String driverName = "mac.geckodriver";
+        // 如果是windows系统 注释上面一行代码, 下面一行代码取消注释,
+        //String driverName = "win64.geckodriver.exe";
+        String webDriverPath = HOME_DIR + SEPERATOR + "src" + SEPERATOR + "main" + SEPERATOR + "resources" + SEPERATOR + "webdrivers" + SEPERATOR + driverName;
         System.setProperty("webdriver.gecko.driver", webDriverPath);
         DRIVER = new FirefoxDriver();
         WAIT = new WebDriverWait(DRIVER, 10);
