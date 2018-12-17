@@ -43,5 +43,15 @@ public class JsoupSample {
         String data = service.createOrder(reqData).execute().body().string();
         Files.write(Paths.get(HOME_DIR + SEPERATOR + "response.html"), data.getBytes(StandardCharsets.UTF_8));
         System.out.println(data);
+
+        /**
+         * curl -X POST \
+         *   'https://shop.10086.cn/i/v1/pay/saveorder/13695589826?provinceId=551' \
+         *   -H 'Content-Type: application/json' \
+         *   -H 'Postman-Token: b2aff112-1fef-471d-abdb-1d6750392e88' \
+         *   -H 'Referer: https://shop.10086.cn/i/?f=rechargecredit&mobileNo=13695589826&amount=30' \
+         *   -H 'cache-control: no-cache' \
+         *   -d '{"channel":"00","amount":29.94,"chargeMoney":30,"choseMoney":30,"operateId":1552,"homeProv":"551","source":"","numFlag":"0"}'
+         */
     }
 }
