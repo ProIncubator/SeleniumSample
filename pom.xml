@@ -98,5 +98,10 @@
             <artifactId>adapter-rxjava2</artifactId>
             <version>2.2.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>converter-gson</artifactId>
+            <version>2.5.0</version>
+        </dependency>
     </dependencies>
 </project>
