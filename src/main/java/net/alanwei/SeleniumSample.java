@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Hello world!
  */
-public class App {
+public class SeleniumSample {
 
     private final static FirefoxDriver DRIVER;
 
