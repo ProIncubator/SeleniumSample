@@ -10,11 +10,17 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface Shop10086Service {
-    @GET("i?f=rechargecredit&mobileNo=13695589826&amount=100")
-    Observable<Response<ResponseBody>> fetchOrder();
+    @GET("i")
+    Observable<Response<ResponseBody>> fetchOrder(@Query("f") String f, @Query("mobileNo") String mobile, @Query("amount") int amount);
 
-    @POST("i/v1/pay/saveorder/13695589826?provinceId=551")
-    Observable<Response<ResponseBody>> createOrder(@Header("Referer") String referer, @Body Map<String, Object> data);
+    default Observable<Response<ResponseBody>> fetchOrder(String mobile, int amount) {
+        return this.fetchOrder("rechargecredit", mobile, amount);
+    }
+
+    @POST("i/v1/pay/saveorder/{mobile}")
+    Observable<Response<ResponseBody>> createOrder(@Header("Referer") String referer, @Path("mobile") String mobile, @Query("provinceId") int provinceId, @Body Map<String, Object> data);
 }
