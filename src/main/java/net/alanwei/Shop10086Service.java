@@ -14,7 +14,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface Shop10086Service {
-    @GET("i")
+    @GET("i/")
     Observable<Response<ResponseBody>> fetchOrder(@Query("f") String f, @Query("mobileNo") String mobile, @Query("amount") int amount);
 
     default Observable<Response<ResponseBody>> fetchOrder(String mobile, int amount) {
