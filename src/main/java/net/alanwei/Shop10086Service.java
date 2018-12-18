@@ -1,17 +1,14 @@
 package net.alanwei;
 
 
-import java.util.Map;
-
 import io.reactivex.Observable;
+import net.alanwei.models.BaseResponse;
+import net.alanwei.models.CreateOrderResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
+import retrofit2.http.*;
+
+import java.util.Map;
 
 public interface Shop10086Service {
     @GET("i/")
@@ -22,5 +19,8 @@ public interface Shop10086Service {
     }
 
     @POST("i/v1/pay/saveorder/{mobile}")
-    Observable<Response<ResponseBody>> createOrder(@Header("Referer") String referer, @Path("mobile") String mobile, @Query("provinceId") int provinceId, @Body Map<String, Object> data);
+    Observable<Response<BaseResponse<CreateOrderResponse>>> createOrder(@Header("Referer") String referer, @Path("mobile") String mobile, @Query("provinceId") int provinceId, @Body Map<String, Object> data);
+
+    @GET
+    Observable<Response<ResponseBody>> getUrl(@Url String url);
 }
