@@ -2,6 +2,7 @@ package net.alanwei;
 
 import net.alanwei.models.BaseResponse;
 import net.alanwei.models.CreateOrderResponse;
+import okhttp3.OkHttpClient;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -19,10 +20,14 @@ public class JsoupSample {
 
     public static void main(String[] args) {
 
+        OkHttpClient.Builder buidler = new OkHttpClient.Builder();
+        buidler.followRedirects(false);
+
         Shop10086Service shop10086 = new Retrofit.Builder()
                 .baseUrl("https://shop.10086.cn/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(buidler.build())
                 .build()
                 .create(Shop10086Service.class);
 
@@ -31,6 +36,7 @@ public class JsoupSample {
                 .baseUrl("https://pay.shop.10086.cn/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(buidler.build())
                 .build().create(PayShop10086Service.class);
 
         shop10086.fetchOrder(MOBILE, 30)
