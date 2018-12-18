@@ -1,15 +1,14 @@
 package net.alanwei;
 
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class JsoupSample {
     private final static String HOME_DIR = System.getProperty("user.dir");
@@ -23,13 +22,13 @@ public class JsoupSample {
                 .build();
 
         Shop10086Service service = retrofit.create(Shop10086Service.class);
-        service.fetchOrder().subscribe(response -> {
-            Set<String> names = response.headers().names();
-            for (String name : names) {
-                String value = response.headers().get(name);
-                System.out.println(name + ": " + value);
-            }
-        });
+//        service.fetchOrder().subscribe(response -> {
+//            Set<String> names = response.headers().names();
+//            for (String name : names) {
+//                String value = response.headers().get(name);
+//                System.out.println(name + ": " + value);
+//            }
+//        });
         Map<String, Object> reqData = new HashMap<>();
         //{"channel":"00","amount":29.94,"chargeMoney":30,"choseMoney":30,"operateId":1552,"homeProv":"551","source":"","numFlag":"0"}
         reqData.put("channel", "00");
@@ -40,9 +39,12 @@ public class JsoupSample {
         reqData.put("homeProv", "551");
         reqData.put("source", "");
         reqData.put("numFlag", "0");
-        String data = service.createOrder(reqData).execute().body().string();
-        Files.write(Paths.get(HOME_DIR + SEPERATOR + "response.html"), data.getBytes(StandardCharsets.UTF_8));
-        System.out.println(data);
+
+        service.createOrder("https://shop.10086.cn/i/?f=rechargecredit&mobileNo=13695589826&amount=30", reqData).subscribe(response -> {
+            String data = response.body().string();
+            Files.write(Paths.get(HOME_DIR + SEPERATOR + "response.html"), data.getBytes(StandardCharsets.UTF_8));
+            System.out.println(data);
+        });
 
         /**
          * curl -X POST \
