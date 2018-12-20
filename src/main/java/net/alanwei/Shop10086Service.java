@@ -30,10 +30,26 @@ public interface Shop10086Service {
     Observable<Response<BaseResponse<CreateOrderResponse>>> createOrder(@Header("Referer") String referer, @Path("mobile") String mobile, @Query("provinceId") int provinceId, @Body Map<String, Object> data);
 
     @GET
-    @Headers({"User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"})
+    @Headers({
+            //"Connection: keep-alive",
+            //"Upgrade-Insecure-Requests: 1",
+            "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+            //"DNT: 1",
+            //"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+            //"Accept-Encoding: gzip, deflate, br",
+            //"Accept-Language: en,zh-CN;q=0.9,zh;q=0.8",
+    })
     Observable<Response<ResponseBody>> getUrl(@Url String url);
 
     @GET
-    @Headers({"User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"})
+    @Headers({
+            //"Connection: keep-alive",
+            //"Upgrade-Insecure-Requests: 1",
+            "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+            //"DNT: 1",
+            //"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+            //"Accept-Encoding: gzip, deflate, br",
+            //"Accept-Language: en,zh-CN;q=0.9,zh;q=0.8",
+    })
     Observable<Response<ResponseBody>> getUrlWithHeaders(@Url String url, @HeaderMap Map<String, String> headers);
 }

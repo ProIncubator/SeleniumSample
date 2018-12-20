@@ -41,7 +41,7 @@ public class JsoupSample {
                 .build()
                 .create(PayShop10086Service.class);
 
-        final Map<String, String> httpHeadersCollector = new HashMap<>();
+        final Map<String, String> alipayCookies = new HashMap<>();
 
         shop10086.fetchOrder(MOBILE, 30)
                 .switchMap(response -> {
@@ -93,25 +93,30 @@ public class JsoupSample {
                     //mapi.alipay.com -> Response
                     //Request -> unitradeadapter.alipay.com
 
-                    String reqCookies = response.headers()
-                            .values("Set-Cookie")
-                            .stream()
-                            .map(cookie -> cookie.split(";")[0].split("="))
-                            .filter(kv -> Arrays.asList("zone", "ALIPAYJSESSIONID", "ctoken").indexOf(kv[0]) != -1)
-                            .map(kv -> String.format("%s=%s", kv[0], kv[1]))
-                            .collect(Collectors.joining("; "));
-
-                    httpHeadersCollector.put("Cookie", reqCookies);
+                    Map<String, String> reqCookies = generateAlipayCookie(response.headers());
+                    reqCookies.keySet().forEach(key -> alipayCookies.put(key, reqCookies.get(key)));
+                    Map<String, String> headers = new HashMap<>();
+                    String cookieValue = String.format("zone=%s; ALIPAYJSESSIONID=%s; ctoken=%s", alipayCookies.get("zone"), alipayCookies.get("ALIPAYJSESSIONID"), alipayCookies.get("ctoken"));
+                    headers.put("Cookie", cookieValue);
 
                     String location = response.headers().get("Location");
-                    return shop10086.getUrlWithHeaders(location, httpHeadersCollector);
+                    return shop10086.getUrlWithHeaders(location, headers);
                 })
                 .switchMap(response -> {
                     //unitradeadapter.alipay.com -> Response
                     //Request -> excashier.alipay.com
 
+                    Map<String, String> reqCookies = generateAlipayCookie(response.headers());
+                    if (reqCookies.containsKey("ALIPAYJSESSIONID")) {
+                        alipayCookies.put("ALIPAYJSESSIONID", reqCookies.get("ALIPAYJSESSIONID"));
+                    }
+
+                    Map<String, String> headers = new HashMap<>();
+                    String cookieValue = String.format("zone=%s; ALIPAYJSESSIONID=%s; ctoken=%s", alipayCookies.get("zone"), alipayCookies.get("ALIPAYJSESSIONID"), alipayCookies.get("ctoken"));
+                    headers.put("Cookie", cookieValue);
+
                     String location = response.headers().get("Location");
-                    return shop10086.getUrlWithHeaders(location, httpHeadersCollector);
+                    return shop10086.getUrlWithHeaders(location, headers);
                 })
                 .subscribe(response -> {
                     //excashier.alipay.com -> Response
@@ -123,6 +128,16 @@ public class JsoupSample {
                     String qrImageUrl = doc.selectFirst("#J_qrImgUrl").attr("value");
                     System.out.println(qrImageUrl);
                 });
+
+    }
+
+    public static Map<String, String> generateAlipayCookie(Headers headers) {
+
+        return headers.values("Set-Cookie")
+                .stream()
+                .map(cookie -> cookie.split(";")[0].split("="))
+                .filter(kv -> Arrays.asList("zone", "ALIPAYJSESSIONID", "ctoken").indexOf(kv[0]) != -1)
+                .collect(Collectors.toMap(kv -> kv[0], kv -> kv[1]));
 
     }
 }
